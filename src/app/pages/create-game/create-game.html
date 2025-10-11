@@ -1,0 +1,47 @@
+<app-header></app-header>
+<body>
+  <div class="container">
+    <h2>สร้างเกมใหม่</h2>
+    <div class="form-box">
+      
+      <!-- Upload Image -->
+      <div class="upload-section">
+        <div class="upload-box">
+          <img src="https://via.placeholder.com/100x80?text=Image" alt="preview">
+        </div>
+        <button class="upload-btn">อัพรูปภาพ</button>
+      </div>
+
+      <!-- Form -->
+      <div class="form-section">
+        <label>ชื่อเกม</label>
+        <input type="text" placeholder="กรุณากรอกชื่อเกม">
+
+        <div class="row">
+          <div class="col">
+            <label>ราคา</label>
+            <input type="number" placeholder="ราคา">
+          </div>
+          <div class="col">
+            <label>ประเภท</label>
+            <select>
+              <option>เลือกประเภท</option>
+              <option>Action</option>
+              <option>RPG</option>
+              <option>Puzzle</option>
+            </select>
+          </div>
+        </div>
+
+        <label>รายละเอียด</label>
+        <textarea placeholder="กรุณากรอกรายละเอียดเกม"></textarea>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+      <button class="cancel">ยกเลิก</button>
+      <button class="create">สร้าง</button>
+    </div>
+  </div>
+</body>

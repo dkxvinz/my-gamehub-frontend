@@ -15,15 +15,15 @@ export class UsersService{
      constructor (private constants: Constants,private http:HttpClient ,private authService:AuthService) {}
    
 
-     public async getAllUser (options?:{[param:string]:string | number |boolean}):Promise<UsersGetRes[]>{
+     public async getAllUser (options?:any){
           const url = this.constants.API_ENDPOINT + '/users/';
-          const params = new HttpParams({ fromObject: options });
-          const response = await lastValueFrom(this.http.get<UsersGetRes[]>(url,{params}));
+          // const params = new HttpParams({ fromObject: options });
+          const response = await lastValueFrom(this.http.get(url,));
           return response as UsersGetRes[];
      }
 
    
-  public async getProfile(idx: number,): Promise<UsersGetRes> {
+  public async getProfile(idx: number,): Promise<UsersGetRes|null> {
        
     const url = `${this.constants.API_ENDPOINT}/users/profile/${idx}`;
      const token = this.authService.getToken();
@@ -34,60 +34,79 @@ export class UsersService{
           }
           const headers = new HttpHeaders({
                'Authorization': `Bearer ${token}`
+               
           });
+          
+
+          console.log('Token from localStorage:', token);
     return lastValueFrom(this.http.get<UsersGetRes>(url,{headers}));//
 
   }
 
      //get Id
-     public async getOneUser(id:number):Promise<UsersGetRes | null>{
+     public async getOneUser(id:number):Promise<UsersGetRes>{
           const url = `${this.constants.API_ENDPOINT}/users/${id}`;
           const response = await lastValueFrom(this.http.get(url));
           return response as UsersGetRes;
      }
 
      //get Name
-     public async getUserName(username:string,options?:any) {
-          const url =  `${this.constants.API_ENDPOINT}/users/`;
-          const response = await lastValueFrom(
-               this.http.get(url, {params:{username:username,}})
-          );
-          return response as UsersGetRes;
-     }
+     // public async getUserName(username:string,options?:any) {
+     //      const url =  `${this.constants.API_ENDPOINT}/users/`;
+     //      const response = await lastValueFrom(
+     //           this.http.get(url, {params:{username:username,}})
+     //      );
+     //      return response as UsersGetRes;
+     // }
 
 
 
 
      //for register user
-     public async createUser(username: string,email: string,password: string,wallet_balance:number|0,role:number| 1):Promise<any>
-             {
-             const body = {username:username,email:email, password:password,wallet_balance:wallet_balance,role:role};
-             const url = this.constants.API_ENDPOINT + '/users/register';
-             console.log("Sending register request:",body);
+    // Register
+public async createUser(
+  username: string,
+  email: string,
+  password: string,
+  wallet_balance: number = 0,
+  role: number = 1
+): Promise<any> {
+  const body = { username, email, password, wallet_balance, role };
+  const url = `${this.constants.API_ENDPOINT}/users/register`;
+  console.log("Sending register request:", body);
 
-             try {
-                    const response = await lastValueFrom(this.http.post(url,body));
-                    console.log("Register success: ",response);
-                    return response;
-             } catch (error) {
-                    console.error("POST failed: ",error);
-                    
-             }
-     }
+  try {
+    const response = await lastValueFrom(this.http.post(url, body));
+    console.log("Register success:", response);
+    return response;
+  } catch (error) {
+    console.error("POST failed:", error);
+    throw error; // important to throw
+  }
+}
 
-     public async login(email: string, password: string): Promise<any> {
-     const body = { email:email, password:password };
-     const url = this.constants.API_ENDPOINT + '/users/login';
+// Login
+public async login(email: string, password: string): Promise<any> {
+  const body = { email, password };
+  const url = `${this.constants.API_ENDPOINT}/users/login`;
 
-     try {
-     const response = await lastValueFrom(this.http.post(url, body));
-     console.log("Login success: ", response);
-     return response; 
-     } catch (error) {
-     console.error("Login failed: ", error);
-     throw error;
-     }
-     }
+  try {
+    const response: any = await lastValueFrom(this.http.post(url, body));
+    console.log("Login success:", response);
+
+    // เก็บ token ลง localStorage
+    if (response.token) {
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify(response.user));
+    }
+
+    return response;
+  } catch (error) {
+    console.error("Login failed:", error);
+    throw error;
+  }
+}
+
 
      //search anything of users 
      async searchUser(keyword?: string){

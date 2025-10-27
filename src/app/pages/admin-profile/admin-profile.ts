@@ -5,10 +5,12 @@ import { UsersGetRes } from '../../model/user_get_res';
 import { UsersService } from '../../services/api/users';
 import { NgIf } from "@angular/common";
 import { AuthService } from '../../services/api/auth';
+import { MatIcon } from "@angular/material/icon";
+import { Constants } from '../../config/costants';
 
 @Component({
   selector: 'app-admin-profile',
-  imports: [Header, RouterLink, NgIf],
+  imports: [Header, RouterLink, NgIf, MatIcon],
   templateUrl: './admin-profile.html',
   styleUrl: './admin-profile.scss'
 })
@@ -20,9 +22,11 @@ isLoading: boolean = true;
 errorMessage = '';
 
 userGetRes: UsersGetRes | null = null;
+ apiUrl : string = '';
 
-
-constructor(private activeRoute:ActivatedRoute,private userService:UsersService ,private router:Router,private authService:AuthService) {}
+constructor(private activeRoute:ActivatedRoute,private userService:UsersService ,private router:Router,private authService:AuthService,private constants:Constants) {
+   this.apiUrl = this.constants.API_ENDPOINT;
+}
 
 ngOnInit(): void {
   this.loadUserProfile();

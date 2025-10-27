@@ -1,25 +1,20 @@
-<header>
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=edit"
-  />
-</header>
+
 <app-header></app-header>
 <div class="profile-container" >
   <div class="base-container">
     <div class="set-profileBox"  *ngIf="userGet && !isLoading">
       <div class="frame-profile">
         <div class="set-circle">
-          <img [src]="userGet.profile_image || profileImage" class="set-image" />
+            <img [src]="apiUrl + '/uploads/' + profileImage" class="set-image" />
         </div>
       </div>
 
       <p class="set-name">{{userGet.username}}</p>
       <p class="set-email">({{userGet.email}})</p>
-      <div class="set-moneyBox">
+      <!-- <div class="set-moneyBox">
         <p class="set-textmoney">ยอดคงเหลือ</p>
         <p class="set-number">{{userGet.wallet_balance}}</p>
-      </div>
+      </div> -->
       <div>
         <button class="set-logout-btn">ออกจากระบบ</button>
       </div>
@@ -34,7 +29,7 @@
           <div class="image-sec">
             <div class="edit-Image">
               <div class="edit-frame">
-                <img [src]="profileImage" class="edit-image" />
+                <img [src]="apiUrl + '/uploads/' + profileImage" class="edit-image" />
               </div>
             </div>
                <label class="upload-btn">

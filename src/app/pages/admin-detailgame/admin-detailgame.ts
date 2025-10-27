@@ -4,22 +4,29 @@ import { GamesGetRes } from '../../model/game_get_res';
 import { GameService } from '../../services/api/games';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 import { CommonModule, NgIf } from '@angular/common';
 import { Constants } from '../../config/costants';
 import { TranSactionService } from '../../services/api/trans';
 
+
 @Component({
-  selector: 'app-detail-gamepage',
-  imports: [Header, MatIconModule, CommonModule,NgIf],
-  templateUrl: './detail-gamepage.html',
-  styleUrl: './detail-gamepage.scss',
+  selector: 'app-admin-detailgame',
+  imports: [Header, MatIconModule,MatMenuModule,MatButtonModule, CommonModule, NgIf],
+  templateUrl: './admin-detailgame.html',
+  styleUrl: './admin-detailgame.scss'
 })
-export class DetailGamepage implements OnInit {
+export class AdminDetailgame  implements OnInit{
+
   games: GamesGetRes | null = null;
 
   apiUrl?: string;
   gameId: number | null = null;
+  deletedGame: any;
 
+
+  
   constructor(
     private gameService: GameService,
     private activeRoute: ActivatedRoute,
@@ -28,7 +35,7 @@ export class DetailGamepage implements OnInit {
     private router:Router
   ) {}
 
-  ngOnInit() {
+   ngOnInit() {
     this.gameDetail();
   }
   gameDetail() {
@@ -44,10 +51,28 @@ export class DetailGamepage implements OnInit {
     } catch (error) {}
   }
 
+  onEdit(gameId: number) {
+    this.router.navigate(['/admin/edit-game',gameId]);
+}
+
+  async onDelete(gameId: number) {
+ const response = await this.gameService.deletedGame(gameId);
+ this.deletedGame = response;
+if(this.deletedGame){
+  alert('ลบเกมสำเร็จแล้ว!')
+  this.router.navigate(['/admin/edit-game',gameId]);
+}else{
+  console.error({message:'delete game fail'});
+  alert('ลบเกมยังไม่สำเร็จ โปรดลองอีกครั้ง');
+  }
+}
+
+
+
+
   async Order() {
     if (this.gameId) {
       try {
-        //เปลี่ยนไปลองเพิ่มออเดอร์
         const response = await this.transService.createPayment(this.gameId);
         console.log('game data: ', this.games);
         alert(`ระบบทำการพิ่มเกมลงรถเข็นของท่านเรียบร้อยแล้ว!`);
@@ -58,3 +83,6 @@ export class DetailGamepage implements OnInit {
     }
   }
 }
+
+
+

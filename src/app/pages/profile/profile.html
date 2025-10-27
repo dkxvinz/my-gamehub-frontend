@@ -16,7 +16,7 @@
     <div class="set-profileBox">
       <div class="frame-profile">
         <div class="set-circle">
-          <img [src]="userGetRes.profile_image" class="set-image" />
+          <img [src]="apiUrl+'/uploads/'+userGetRes.profile_image" class="set-image" />
         </div>
       </div>
       <a [routerLink]="['/user/edit-profile',userGetRes.user_id]" class="edit-profile">
@@ -36,7 +36,7 @@
       </div>
       <div>
         <div class="set-menu-profile">
-          <a [routerLink]="['/user/mygamehub',userGetRes.user_id]" class="set-menu-detail">
+          <a [routerLink]="['/user/profile',userGetRes.user_id]" class="set-menu-detail">
             <span class="material-symbols-outlined"></span>
             <!-- sports_esports -->
             <p>คลังเกมของฉัน</p>
@@ -64,10 +64,28 @@
       </div>
     </div>
     <div class="set-column">
-      <div class="set-gameBox"></div>
-      <div class="set-transBox">
-        
+      <div class="set-gameBox" *ngFor="let mygame of games">
+         <div class="set-title-mygame"><p>| คลังเกมของฉัน <span>(2)</span></p></div>
+         <div class="set-grid">
+
+
+      <div class="set-frame">
+      
+
+        <div class="set-frameInside">
+          <div class="set-box">
+            <div class="set-detailImage">
+              <img [src]="apiUrl + '/uploads/'+ mygame.image || 'not fond image'" alt="roblox" class="set-gameImage" />
+              <a [routerLink]="['/user/mygame-detail',mygame.game_id]">detail</a>
+            </div>
+           <p>{{mygame.name}}</p>
+          </div>
+
+          
+        </div>
       </div>
+      </div>
+       
     </div>
   </div>
 </div>

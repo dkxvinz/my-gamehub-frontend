@@ -8,41 +8,22 @@
     <div class="set-profileBox">
       <div class="frame-profile">
         <div class="set-circle">
-          <img [src]="'https://node-gamehub.onrender.com/files/' +userGetRes.profile_image" class="set-image" />
+          <img [src]="apiUrl + '/uploads/'  +userGetRes.profile_image" class="set-image" />
         </div>
       </div>
-      <a [routerLink]="['/user/edit-profile',userGetRes.user_id]" class="edit-profile">
-        <span
-          class="material-symbols-outlined"
-         
-        >
-          edit
-        </span>
-      </a>
-
+     
       <p class="set-name">{{userGetRes.username}}</p>
       <p class="set-email">{{userGetRes.email}}</p>
-      <div class="set-moneyBox">
-        <p class="set-textmoney">ยอดคงเหลือ</p>
-        <p class="set-number">{{userGetRes.wallet_balance}}</p>
-      </div>
+  
       <div>
         <div class="set-menu-profile">
-          <a [routerLink]="['/user/mygamehub',userGetRes.user_id]" class="set-menu-detail">
-            <span class="material-symbols-outlined">sports_esports</span>
-            <p>คลังเกมของฉัน</p>
-          </a>
-          <hr class="set-hr">
+          
           <div>
             
           </div>
-          <a [routerLink]="['/user/transpage',userGetRes.user_id]" class="set-menu-detail">
-           <span class="material-symbols-outlined"  >compare_arrows</span>
-            <p >ประวัติการทำรายการ</p>
-          </a>
-            <hr class="set-hr">
-          <a [routerLink]="['/user/edit-profile',userGetRes.user_id]" class="set-menu-detail">
-            <span class="material-symbols-outlined">edit</span>
+          
+          <a [routerLink]="['/admin/edit-admin-profile',userGetRes.user_id]" class="set-menu-detail">
+           <mat-icon>edit</mat-icon>
             <p>แก้ไขโปรไฟล์</p>
           </a>
           <hr class="set-hr">
@@ -53,9 +34,6 @@
        
       </div>
     </div>
-    <div class="set-column">
-      <div class="set-gameBox"></div>
-      <div class="set-transBox"></div>
-    </div>
+    
   </div>
 </div>

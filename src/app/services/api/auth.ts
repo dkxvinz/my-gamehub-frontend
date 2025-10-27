@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, lastValueFrom } from 'rxjs';
+import { BehaviorSubject,lastValueFrom } from 'rxjs';
+
 
 export interface UserModel{
   userId: number;
@@ -9,92 +10,81 @@ export interface UserModel{
   email:string;
   profile_image:string;
   role:number;
-}
-export interface AuthResponse{
-  token:string;
-  userData:UserModel;
+  wallet_balance:number;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService  {
-
   private API_URL = 'https://node-gamehub.onrender.com';
-  public isLoggedIn: boolean = false;
   public currentUser: UserModel | null = null;
-  snapshot: any;
-   
-   constructor(private http: HttpClient, private router:Router){
-    this.updateAuthState();
-   }
-   private updateAuthState():void {
-     this.currentUser = this.getCurrentUser();
-     this.isLoggedIn = this.isAuthenticated();
-  }
-   
-  
-    public setCurrentUser(user: any): void {
-    console.log('AuthService: Saving user to localStorage...', user); 
-    if (user) {
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      this.updateAuthState();
-    }
+
+private currentUserSubject = new BehaviorSubject<UserModel | null>(this.getCurrentUser());
+public currentUser$ = this.currentUserSubject.asObservable();
+  constructor(private http: HttpClient, private router: Router){
+    this.currentUser = this.getCurrentUser();
   }
 
-  // ฟังก์ชันนี้ต้องใช้ JSON.parse
-  public getCurrentUser(): any {
-    const userString = localStorage.getItem('currentUser');
-    console.log('AuthService: Reading from localStorage...', userString); // เพิ่ม log เพื่อดูว่าอ่านค่าอะไรได้
-
-    if (userString) {
-      const userObject = JSON.parse(userString);
-      console.log('AuthService: After parsing, returning object...', userObject); // เพิ่ม log เพื่อดูผลลัพธ์หลัง parse
-      return userObject;
-    }
-    return null;
+  public login(email: string, password: string){
+    return lastValueFrom(this.http.post<any>(`${this.API_URL}/users/login`, { email, password }))
+      .then(res => {
+        if(res.token){
+          localStorage.setItem('token', res.token);
+          localStorage.setItem('currentUser', JSON.stringify(res.userData));
+          this.currentUser = res.userData;
+        }
+        return res;
+      });
   }
 
-
-  getCurrentUserId(): number | null { 
-  const user = this.getCurrentUser();
-
-  if (user && user.userId) {
-    return user.userId;
+  public logout(){
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+    this.currentUser = null;
+    this.router.navigate(['/homepage']);
+      this.currentUserSubject.next(null);
   }
-  return null;
-}
-
 
   
-  public saveToken(token: string): void {
-    localStorage.setItem('token', token);
-  }
-
   public getToken(): string | null {
     return localStorage.getItem('token');
   }
 
- 
+  public getCurrentUser(): UserModel | null {
+    const str = localStorage.getItem('currentUser');
+    return str ? JSON.parse(str) : null;
+  }
+
   public isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+    return !!this.getToken();
   }
 
-   
   get isAdmin(): boolean {
-    return this.isLoggedIn && this.currentUser?.role === 0;
+  return this.currentUser?.role === 0;
+}
+
+get isUser(): boolean {
+  return this.currentUser?.role === 1;
+}
+
+getCurrentUserId(): number | null {
+  return this.currentUser?.userId ?? null;
+}
+
+  // save token
+  public saveToken(token: string): void {
+    localStorage.setItem('token', token);
   }
 
-  // Getter สำหรับเช็คว่าเป็น User ทั่วไปหรือไม่
-  get isUser(): boolean {
-    return this.isLoggedIn && this.currentUser?.role === 1;
+
+  // save user info
+  public setCurrentUser(user: UserModel): void {
+    this.currentUser = user;
+    localStorage.setItem('currentUser', JSON.stringify(user));
+     this.currentUserSubject.next(user); // แจ้ง subscribers
   }
 
-  public logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('currentUser');
-    this.updateAuthState();
-  }
+
+
 
 
 }

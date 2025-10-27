@@ -3,44 +3,19 @@
   <div class="container">
     <h2 class="section-title">|เกมของ GAMEHUB</h2>
     
-    <div class="game-grid">
-      <!-- การ์ดเกม -->
-      <div class="game-card">
-        <img src="assets/images/roblox.webp" alt="ROBLOX">
-        <p>ROBLOX</p>
+    <div class="game-grid" >
+      <div  *ngFor="let game of gamesGet">
+            <a [routerLink]="['/admin/detail-game',game.game_id]" style="text-decoration: none; color: white;" >
+      <div class="game-card" >
+        
+        <img [src]="apiUrl+'/uploads/'+ formatImagePath(game.image)" alt="{{game.name}}">
+        <p>{{game.name}}</p>
+        
       </div>
-      <div class="game-card">
-        <img src="assets/images/rov.png" alt="ROV">
-        <p>ROV</p>
+      </a>
+        
       </div>
-      <div class="game-card">
-        <img src="assets/images/freefire.jpg" alt="FREE FIRE">
-        <p>FREE FIRE</p>
-      </div>
-      <div class="game-card">
-        <img src="assets/images/vampire-the-masquerade-bloodlines-2.webp" alt="Vampire: The Masquerade - Bloodlines 2">
-        <p>Vampire: The Masquerade - Bloodlines 2</p>
-      </div>
-      <div class="game-card">
-        <img src="assets/images/dayGone.jpg" alt="Days Gone">
-        <p>Days Gone</p>
-      </div>
-      <div class="game-card">
-        <img src="assets/images/V-Rising-Eternal-Dominance-Pack.png" alt="V Rising - Eternal Dominance Pack">
-        <p>V Rising - Eternal Dominance Pack</p>
-      </div>
-      <div class="game-card">
-        <img src="assets/images/Little-Witch-in-the-Woods.webp" alt="Little Witch in the Woods">
-        <p>Little Witch in the Woods</p>
-      </div>
-      <div class="game-card">
-        <img src="assets/images/minecraft.jpg" alt="Minecraft: Java & Bedrock Edition">
-        <p>Minecraft: Java & Bedrock Edition</p>
-      </div>
-      <div class="game-card">
-        <img src="assets/images/Le-Mans-Ultimate.jpg" alt="Le Mans Ultimate">
-        <p>Le Mans Ultimate</p>
-      </div>
+  
     </div>
   </div>
 </body>

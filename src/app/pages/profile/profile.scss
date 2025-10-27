@@ -36,7 +36,7 @@
   position: absolute;
   width: 20px;
   height: 20px;
-  top: 210px;
+  top: 230px;
   left: 210px;
   background-color: #262626;
   color: white;
@@ -204,22 +204,104 @@
      flex-direction: column;
      justify-content: start;
      align-items: center;
-    padding-top: 30px;
-     width: 100%;
-     height: 180px;
+    //  padding-top: 20px;
+     width: 110%;
+     height: 580px;
      border-radius: 10px;
      box-shadow: 5px 5px 5px #1e1e1e;
      background-color: #121212;
 }
-.set-transBox{
+.set-title-mygame{
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  width: auto;
+  height: 100px;
+  margin-bottom:100%;
+  margin-right: 60%;
+  // background-color: darkcyan;
+  
+}
+// -------------------------
+.set-grid{
+     display: grid;
+     grid-template-columns: repeat(3,150px); 
+     gap: 10%;
+     padding: 20px;
+    //  background-color: darkblue;
+     display: flex;
+     flex-wrap: wrap;        
+     justify-content: center;
+     margin-top: -100%;
+     width: 100%;
+     height: 100%;
+     
+}
+.set-box {
+  column-span: 2;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  border-radius: 8px;
+  flex-direction: column;
+  cursor: pointer;
+    // background: #f32198;
+}
+.set-frame{
+
      display: flex;
      flex-direction: column;
-     justify-content: start;
-     align-items: center;
-    padding-top: 30px;
      width: 100%;
-     height: 350px;
+     height: 250px;    
+     // gap: 100px;
+     margin-bottom: 100%;
+    //  border: 2px solid #262626;
      border-radius: 10px;
-     box-shadow: 5px 5px 5px #1e1e1e;
-     background-color: #121212;
+    //  background-color: yellow;
+  
 }
+// .set-text{
+//      display: flex;
+//      margin-left: 50px;
+//      font-size: 13px;
+     
+    //  background-color: darkcyan;
+// }
+.set-frameInside{
+
+     display: flex;
+     flex-direction: row;  
+     justify-content: space-around;
+     // background-color: rgb(21, 12, 57);
+      
+}
+.set-detailImage{
+     display: flex;
+     flex-direction: column;
+     width: 150px;
+     height: 150px;
+     overflow: hidden;
+     border-radius: 10px;
+     // background-color: darkolivegreen;
+}
+.set-gameImage{
+     width: 100%;
+     height: 100%;
+     object-fit: cover; 
+  }
+  
+// .set-transBox{
+//      display: flex;
+//      flex-direction: column;
+//      justify-content: start;
+//      align-items: center;
+//     padding-top: 30px;
+//      width: 100%;
+//      height: 350px;
+//      border-radius: 10px;
+//      box-shadow: 5px 5px 5px #1e1e1e;
+//      background-color: #121212;
+// }

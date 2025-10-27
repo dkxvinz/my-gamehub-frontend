@@ -10,19 +10,18 @@ export class AuthGuard implements CanActivate {
 
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-  // --- ด่านที่ 1: ตรวจสอบการล็อกอิน ---
   if (!this.authService.isAuthenticated()) {
     console.error('AuthGuard: Not logged in. Redirecting to login.');
     this.router.navigate(['/loginpage']);
     return false;
   }
+  
 
-  // --- ด่านที่ 2: ตรวจสอบ Role ---
+
   const currentUser = this.authService.getCurrentUser();
   const requiredRole = route.data['role'];
-
-  // ===================== DEBUGGING LOGS =====================
-  // นี่คือส่วนที่เราเพิ่มเข้ามาเพื่อหาต้นตอของปัญหา
+  
+ 
   console.log("-----------------------------------------");
   console.log("AuthGuard is checking roles...");
   console.log(`Value of currentUser.role: `, currentUser?.role);
@@ -31,17 +30,18 @@ export class AuthGuard implements CanActivate {
   console.log(`Type of requiredRole:      `, typeof requiredRole);
   console.log(`Are they equal? (===):     `, currentUser?.role === requiredRole);
   console.log("-----------------------------------------");
-  // ========================================================
+    console.log("currentUser:",this.authService.currentUser);
 
   if (currentUser && currentUser.role === requiredRole) {
-    return true; // ถ้าผ่าน ให้เข้าหน้าได้เลย
+  
+    return true; 
   }
   
-  // ถ้าไม่ผ่าน...
+
   console.error('AuthGuard: Access Denied. User does not have the required role.');
   alert('คุณไม่มีสิทธิ์เข้าถึงหน้านี้');
 
-  // ส่งกลับไปหน้าที่เหมาะสม
+  
   if (currentUser && currentUser.role === 1) {
     this.router.navigate(['/user/home']);
   } else if (currentUser && currentUser.role === 0) {

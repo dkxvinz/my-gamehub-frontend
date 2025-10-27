@@ -2,12 +2,15 @@ import { Component } from '@angular/core';
 import { Header } from "../header/header";
 import { UsersGetRes } from '../../model/user_get_res';
 import { ProtectedService } from '../../services/api/protectAPI';
-import { Router } from '@angular/router';
-import { UsersService } from '../../services/api/users';
+import { Router,RouterLink } from '@angular/router';
+import { GamesGetRes } from '../../model/game_get_res';
+import { GameService } from '../../services/api/games';
+import { Constants } from '../../config/costants';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-homepage-admin',
-  imports: [Header],
+  imports: [Header,RouterLink,CommonModule],
   templateUrl: './homepage-admin.html',
   styleUrl: './homepage-admin.scss'
 })
@@ -15,25 +18,23 @@ export class HomepageAdmin {
 isLoggedIn: boolean = true;
 
 person?: UsersGetRes | null;
-  userData: any | undefined;
-constructor(private protectedService: ProtectedService,private router:Router,private userService:UsersService) {}
+
+gamesGet: GamesGetRes[] = [];
+apiUrl: string = '';
+
+constructor(private protectedService: ProtectedService,private router:Router,private gameService:GameService,private constants:Constants) {}
 
  async ngOnInit() {
-    this.protectedService.getProtectedData().subscribe({
-      next: (res) => this.userData = res,
-      error: (err) => console.error('Error fetching protected data', err)
-    });
-
-    // this.router.paramMap.subscribe(params =>{
-    //   const 
-    // })
+  this.loadGames();
+  this.apiUrl = this.constants.API_ENDPOINT;
   }
-
-logout() {
-  localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.isLoggedIn = false;
-    this.router.navigate(['/loginpage']);
+  async loadGames() {
+    this.gamesGet = await this.gameService.getAllGames();
+  }
+  public formatImagePath(path: string): string {
+  return path.replace(/\\/g, '/'); 
 }
+
+
 
 }

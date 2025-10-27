@@ -7,16 +7,19 @@ import { AuthGuard } from './services/api/authGuard';
 import { HomepageAdmin } from './pages/homepage-admin/homepage-admin';
 import { Cartpage } from './pages/cartpage/cartpage';
 import { Profile } from './pages/profile/profile';
-import { GameDetail } from './pages/game-detail/game-detail';
 import { TopupPage } from './pages/topup-page/topup-page';
 import { MygameDetail } from './pages/mygame-detail/mygame-detail';
-import { Mygamehub } from './pages/mygamehub/mygamehub';
 import { Transpage } from './pages/transpage/transpage';
 import { EditAdminProfile } from './pages/edit-admin-profile/edit-admin-profile';
 import { CreateGame } from './pages/create-game/create-game';
 import { CreateDiscount } from './pages/create-discount/create-discount';
 import { UserHistory } from './pages/user-history/user-history';
 import { AdminProfile } from './pages/admin-profile/admin-profile';
+import { DetailGamepage } from './pages/detail-gamepage/detail-gamepage';
+import { AdminDetailgame } from './pages/admin-detailgame/admin-detailgame';
+import { EditGamedetail } from './pages/edit-gamedetail/edit-gamedetail';
+import { UserHistoryProfile } from './pages/user-history-profile/user-history-profile';
+import { ResultSearch } from './pages/result-search/result-search';
 
 export const routes: Routes = [
   { path: 'homepage', component: Homepage},
@@ -28,11 +31,11 @@ export const routes: Routes = [
 { path: 'user/cart/:id', component:Cartpage, canActivate: [AuthGuard], data: { role: 1 } },
 { path: 'user/profile/:id', component:Profile, canActivate: [AuthGuard], data: { role: 1 } },
 { path: 'user/edit-profile/:id', component:Editprofile, canActivate: [AuthGuard], data: { role: 1 } },
-{ path: 'user/game-detail', component:GameDetail, canActivate: [AuthGuard], data: { role: 1 } },
+{ path: 'user/detail-game/:id', component:DetailGamepage, canActivate: [AuthGuard], data: { role: 1 } },
 { path: 'user/top-up/:id', component:TopupPage, canActivate: [AuthGuard], data: { role: 1 } },
-{ path: 'user/mygamehub/:id', component:Mygamehub, canActivate: [AuthGuard], data: { role: 1 } },
-{ path: 'user/mygame-detail', component:MygameDetail, canActivate: [AuthGuard], data: { role: 1 } },
+{ path: 'user/mygame-detail/:id', component:MygameDetail, canActivate: [AuthGuard], data: { role: 1 } },
 { path: 'user/transpage/:id', component:Transpage, canActivate: [AuthGuard], data: { role: 1 } },
+{ path: 'user/result-search:any', component:ResultSearch, canActivate: [AuthGuard], data: { role: 1} },
 
 // Admin pages
 { path: 'admin/home', component: HomepageAdmin, canActivate: [AuthGuard], data: { role: 0 } },
@@ -41,7 +44,11 @@ export const routes: Routes = [
 { path: 'admin/create-discount', component: CreateDiscount, canActivate: [AuthGuard], data: { role: 0 } },
 { path: 'admin/create-game', component: CreateGame, canActivate: [AuthGuard], data: { role: 0 } },
 { path: 'admin/user-trans', component: UserHistory, canActivate: [AuthGuard], data: { role: 0 } },
+{ path: 'admin/user-profile/:id', component: UserHistoryProfile, canActivate: [AuthGuard], data: { role: 0 } },
 { path: 'admin/admin-profile/:id', component: AdminProfile, canActivate: [AuthGuard], data: { role: 0 } },
+{ path: 'admin/detail-game/:id', component:AdminDetailgame, canActivate: [AuthGuard], data: { role: 0} },
+{ path: 'admin/edit-game/:id', component:EditGamedetail, canActivate: [AuthGuard], data: { role: 0} },
+
 
 // // Redirect default
 { path: '', redirectTo: '/homepage', pathMatch: 'full' },

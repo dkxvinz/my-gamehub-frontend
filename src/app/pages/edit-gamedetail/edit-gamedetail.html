@@ -1,7 +1,7 @@
 <app-header></app-header>
 <div class="main-container">
   <div class="container">
-    <h2>สร้างเกมใหม่</h2>
+    <h2>แก้ไขเกมใหม่</h2>
     <div class="set-column-fromBox">
       <div class="form-box">
         <!-- Upload Image -->
@@ -45,8 +45,8 @@
             <div class="col">
           
                 <mat-label>เลือกประเภท</mat-label>
-                <mat-select [(ngModel)]="genres" name="genres">
-                  <mat-option *ngFor="let g of genresOption" [value]="g">{{ g }}</mat-option>
+                <mat-select [(ngModel)]="genres" name="genres"  placeholder="{{game?.genres}}">
+                  <mat-option *ngFor="let genre of genresOption" [value]="genre">{{ genre }}</mat-option>
                 </mat-select>
             
             </div>
@@ -77,7 +77,7 @@
             </a>
           </div>
           <div>
-            <button class="set-save-btn" (click)="createGame()">บันทึก</button>
+            <button class="set-save-btn" (click)="save()">บันทึก</button>
           </div>
         </div>
   </div>

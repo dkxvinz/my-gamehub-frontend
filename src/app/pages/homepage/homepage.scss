@@ -97,19 +97,18 @@ margin: 0px;
 }
 
 .set-grid{
-     display: grid;
-     grid-template-columns: repeat(3,150px); /* ทำหลายคอลัมน์อัตโนมัติ */
-     gap: 10%;
-     padding: 20px;
-     // background-color: darkblue;
+     // display: grid;
+     // grid-template-columns: repeat(3,200px); 
+      gap: 50px;
+     // background-color: #4b0808;
      display: flex;
-     flex-wrap: wrap;        /* ให้วางหลายแถว */
-     justify-content: center; /* จัดกล่องให้อยู่กลาง */
-  
+     flex-wrap: wrap;        
+     justify-content: space-around;
+      padding: 50px;
 }
 
 .set-box {
-  column-span: 2;
+  column-span: 3;
   color: white;
   text-align: center;
   padding: 20px 0;
@@ -122,27 +121,32 @@ margin: 0px;
 
      display: flex;
      flex-direction: column; 
+     align-items: center;
      width: 90%;
-     height: 280px;    
-     // gap: 100px;
+     height: 250px;    
+     gap: 100px;
      margin-top: 20px;
-     border: 2px solid #262626;
+     // border: 2px solid #262626;
      border-radius: 10px;
      // background-color: yellow;
   
 }
-.set-text{
-     display: flex;
-     margin-left: 50px;
-     font-size: 18px;
+.set-frame:hover{
+     background-color: #000000;
      
-     // background-color: darkcyan;
 }
+// .set-text{
+//      display: flex;
+//      margin-left: 50px;
+//      font-size: 18px;
+     
+//      // background-color: darkcyan;
+// }
 .set-frameInside{
-
-     display: flex;
-     flex-direction: row;  
+     display: grid;
+     grid-template-columns: repeat(3,200px); 
      justify-content: space-around;
+     width: 90%;
      // background-color: rgb(21, 12, 57);
       
 }

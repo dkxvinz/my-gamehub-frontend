@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { Header } from "../header/header";
 
 @Component({
   selector: 'app-edit-game',
-  imports: [],
+  imports: [Header],
   templateUrl: './edit-game.html',
   styleUrl: './edit-game.scss'
 })

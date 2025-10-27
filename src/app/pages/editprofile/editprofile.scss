@@ -6,7 +6,8 @@
      width: 1280px;
      height: 700px;
      margin: 30px auto;
-    //  background-color: darkcyan;
+     border-radius: 10px;
+     background-color: #1e1e1e;
 }
 .base-container{
      display: flex;
@@ -14,23 +15,24 @@
      gap: 30px;
      align-items: start;
      justify-content:start;
-     width: 1150px;
-     height: 600px;
+     // width: 1280px;
+     margin-right: 10px;
+     height: 580px;
      border-radius: 10px;
      padding: 20px 20px 20px 20px;
-     // background-color: #1E1E1E;
+     // background-color: red;
 }
 .set-profileBox{
      display: flex;
      flex-direction: column;
      justify-content: start;
      align-items: center;
-    padding-top: 30px;
+     padding-top: 30px;
      width: 400px;
      height: 580px;
      border-radius: 10px;
      box-shadow: 5px 5px 5px #1e1e1e;
-     background-color: #121212;
+     background-color:#121212;
 }
 .edit-profile{
   position: absolute;
@@ -49,6 +51,57 @@
 }
 .edit-profile:hover {
   background-color: #1e1e1e;
+}
+.set-menu-profile{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: auto;
+  margin-bottom:10%;
+//   background-color: yellow
+}
+.set-menu-detail{
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ width: 100%;
+ gap: 8px;
+ cursor: pointer;
+ font-size: 18px;
+ color: #262626;
+//  background-color: rebeccapurple;
+}
+.set-menu-detail p{
+//  background-color: olive;
+ width: 200px;
+
+}
+.set-menu-detail .material-symbols-outlined {
+  font-size: 20px;
+}
+.set-hr{
+   border: none;             
+  height: 1.5px;             
+  background-color: #262626; 
+  margin-right: 50%;       
+  width: 80%;                
+  margin-bottom: 0;
+  margin-top: 0;
+  transition: all 0.1s ease;
+   
+}
+.set-menu-detail:hover {
+  color: #D9d9d9;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+.set-menu-detail:hover + .set-hr {
+  background-color: #D9d9d9;
+  box-shadow: 0 0 10px #D9d9d9;
+  transition: all 0.3s ease;
 }
 .set-name{
   margin-top: 20px;
@@ -69,9 +122,9 @@
   align-items: center;
  width: 220px;
  height: 80px;
- margin-bottom:60%;
+ margin-bottom:5%;
  border-radius: 10px;
- background-color: #1E1E1E;
+ background-color: #262626;
 }
 .set-textmoney{
   color: #6F9A37;
@@ -79,14 +132,14 @@
   margin-bottom: -10px;
   font-size: 18px;
   font-weight: bold;
-  // background-color: darkblue;
+//   background-color: darkblue;
 }
 .set-number{
   // margin-bottom: 10px;
   color: white;
   font-size: 28px;
   font-weight: bold;
-  // background-color: chartreuse;
+//   background-color: chartreuse;
 }
 .set-logout-btn{
      width: 150px;
@@ -97,7 +150,6 @@
      font-weight: bold;
      border-radius: 30px;
      border: none;
-    //  margin-top: 20%;
      cursor: pointer;
      transition: all 0.1s ease;
 }
@@ -130,7 +182,7 @@
 .set-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;           /* ให้รูปเต็มวงกลมแบบไม่บี้ */
+  object-fit: cover;  
 }
 
 .set-column{
@@ -138,6 +190,7 @@
   flex-direction: column;
   width: 700px;
   gap: 20px;
+//   background-color: palegreen;
 
 }
 .set-editBox{
@@ -145,9 +198,10 @@
      flex-direction: row;
      justify-content: space-evenly;
      align-items: center;
-     width: 100%;
-     height: 610px;
+     width: 800px;
+     height: 600px;
      border-radius: 10px;
+     margin-top: 2%;
      box-shadow: 5px 5px 5px #1e1e1e;
      background-color: #121212;
 }

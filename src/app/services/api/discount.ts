@@ -35,13 +35,12 @@ export class DiscountService {
     discount_code: string,
     discount_price:number,
     max_quantity: number,
-   limit_user:number,
   ): Promise<any> {
     const formData = new FormData();
     formData.append('discount_code', discount_code);
     formData.append('discount_price', discount_price.toString());
     formData.append('max_quantity', max_quantity.toString());
-    formData.append('limit_user', limit_user.toString());
+  
 
     
     const url = this.constants.API_ENDPOINT + '/discount/create';
@@ -63,13 +62,11 @@ export class DiscountService {
      discount_code: string,
      discount_price:number,
      max_quantity: number,
-     limit_user:number,
   ): Promise<any> {
     const gameData = {
      discount_code: discount_code,
      discount_price:discount_price,
      max_quantity: max_quantity,
-     limit_user:limit_user,
     };
       const formData = new FormData();
 
@@ -77,7 +74,7 @@ export class DiscountService {
     formData.append('name', discount_code);
     formData.append('discount_price', discount_price.toString());
     formData.append('max_quantity', max_quantity.toString());
-    formData.append('limit_user', limit_user.toString());
+   
     
     const url = `${this.constants.API_ENDPOINT}/discount/update/${discontId}`;
 

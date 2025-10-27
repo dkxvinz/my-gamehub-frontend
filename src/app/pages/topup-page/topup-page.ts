@@ -30,14 +30,14 @@ export class TopupPage  {
 
   
   ngOnInit(): void {
-    // ดึงค่า 'id' จาก URL parameter (เหมือนตอนทำหน้า Profile)
+    
     const idFromUrl = this.activeRoute.snapshot.paramMap.get('id');
     if (idFromUrl) {
       this.userId = Number(idFromUrl);
       console.log(`Component นี้ถูกสร้างขึ้นเพื่อเติมเงินให้ User ID: ${this.userId}`);
     } else {
       console.error('ไม่พบ User ID ใน URL');
-      // อาจจะ redirect กลับไปหน้ารายชื่อ
+   
       this.router.navigate(['/user/home']);
     }
   }

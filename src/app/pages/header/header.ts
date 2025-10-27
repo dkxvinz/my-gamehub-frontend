@@ -67,7 +67,11 @@ export class Header implements OnInit{
     goToGame(gameId: number) {
     clearTimeout(this.hideTimeout);
     this.showPopup = false;
-    this.router.navigate(['/user/detail-game', gameId]);
+   if(this.user?.user_id == 1){
+     this.router.navigate(['/admin/detail-game', gameId]);
+   }else{
+    this.router.navigate(['/user/detail-game',gameId]);
+   }
   }
 
   search(keyword: string) {

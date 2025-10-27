@@ -9,7 +9,7 @@
     <h3>จำนวนการเติมเงิน</h3>
 
     <div class="buttons">
-      <!-- ถ้าไฟมา แปลงฟอร์มรับเป็น angular -->
+      
        <button *ngFor="let amount of presetAmounts"
                   mat-raised-button
                   class="amount-button"
@@ -24,21 +24,23 @@
 
     <div class="set-discount">
       <label>ชื่อโค้ดส่วนลด
-      <input type="text">
+      <input matInput [(ngModel)]="discountCode" type="text">
     </label>
     </div>
     
     <div class="set-discount">
       <label>กำหนดส่วนลด
-      <input type="text">
+      <input matInput  [(ngModel)]="selectedAmount" type="text" >
     </label>
     </div>
 
     <div class="set-discount">
-      <label>จำนวน
-      <input type="number" placeholder="จำนวนเงิน" [(ngModel)]="selectedAmount">
+      <label>จำนวนผู้ใช้สูงสุด
+      <input type="number" placeholder="1" [(ngModel)]="discountMax"  >
     </label>
     </div>
+
+    
 
     <button class="create" (click)="onCreate()">สร้างส่วนลด</button>
   </section>

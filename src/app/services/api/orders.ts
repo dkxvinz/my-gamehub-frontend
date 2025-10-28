@@ -23,7 +23,7 @@ constructor(private constants:Constants,private http:HttpClient,private authSerV
       'Authorization': `Bearer ${token}`,
     });
 
-    return await lastValueFrom(this.http.post(url, {}, {headers}));
+    return await lastValueFrom(this.http.get(url,{headers}));
     
   } catch (err) {
     console.error('Orders failed:', err);
@@ -53,8 +53,9 @@ public async getAddCart(gameId: number) {
 }
 
 
-public async getCheckOrders(gameId: number) {
+public async getCheckOrders(gameId: number, checked: boolean) {
   const url = `${this.constants.API_ENDPOINT}/orders/checkOrder/${gameId}`;
+  const body = checked;
   try {
     const token = this.authSerVice.getToken();
 
@@ -63,11 +64,12 @@ public async getCheckOrders(gameId: number) {
       'Authorization': `Bearer ${token}`,
     });
 
-    return await lastValueFrom(this.http.post(url, {}, { headers: headers }));
+    return await lastValueFrom(this.http.put(url, {checked}, { headers: headers }));
     
   } catch (err) {
     console.error('Orders failed:', err);
     throw err;
   }
 }
+
 }

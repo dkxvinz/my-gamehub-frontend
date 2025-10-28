@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Constants } from '../../config/costants';
 import { lastValueFrom } from 'rxjs';
 import { AuthService, } from './auth';
-import { DiscountGetRes } from '../../model/discount_get_res';
+import { DiscountGetRes, DiscountItem } from '../../model/discount_get_res';
 
 @Injectable({
   providedIn: 'root',
@@ -17,37 +17,39 @@ export class DiscountService {
 
   public async getAllDiscount(options?: {
     [param: string]: string | number | boolean;
-  }): Promise<DiscountGetRes[]> {
+  }): Promise<DiscountGetRes> { //ลบ []
     const url = this.constants.API_ENDPOINT + '/discount/';
     const params = new HttpParams({ fromObject: options });
-    const response = await lastValueFrom(this.http.get<DiscountGetRes[]>(url, { params }));
+    const response = await lastValueFrom(this.http.get<DiscountGetRes>(url, { params })); //ลบ []
     return response;
   }
 
   //---------------------------------------------------------------
-  public async getDiscountId(discountId: number): Promise<DiscountGetRes | null> {
-    const url = `${this.constants.API_ENDPOINT}/games/${discountId}`;
-    const response = await lastValueFrom(this.http.get(url));
-    return response as DiscountGetRes; 
-  }
+  public async getDiscountById(discountId: number): Promise<DiscountItem> {
+
+  const url = `${this.constants.API_ENDPOINT}/discount/${discountId}`; 
+  
+  const response = await lastValueFrom(this.http.get<DiscountItem>(url)); 
+  return response;
+}
 //-------------------------------------------------------------------
   public async createDiscount(
     discount_code: string,
     discount_price:number,
     max_quantity: number,
   ): Promise<any> {
-    const formData = new FormData();
-    formData.append('discount_code', discount_code);
-    formData.append('discount_price', discount_price.toString());
-    formData.append('max_quantity', max_quantity.toString());
-  
+  const body = {
+      discountCode: discount_code,
+      discountPrice: discount_price,
+      maxQuantity: max_quantity
+    };
 
     
     const url = this.constants.API_ENDPOINT + '/discount/create';
-    console.log('Sending create discount request with FormData:', formData);
+    console.log('Sending create discount request with FormData:', body);
 
     try {
-      const response = await lastValueFrom(this.http.post(url, formData));
+      const response = await lastValueFrom(this.http.post(url, body));
       console.log('Create New Discount success: ', response);
       return response;
     } catch (error) {
@@ -56,42 +58,41 @@ export class DiscountService {
   }
   //--------------------------------------------------------------------------------------------------
 
-  //edit users
+  //edit discount
   public async updateDiscount(
-     discontId:number,
-     discount_code: string,
-     discount_price:number,
-     max_quantity: number,
-  ): Promise<any> {
-    const gameData = {
-     discount_code: discount_code,
-     discount_price:discount_price,
-     max_quantity: max_quantity,
-    };
-      const formData = new FormData();
-
-  
-    formData.append('name', discount_code);
-    formData.append('discount_price', discount_price.toString());
-    formData.append('max_quantity', max_quantity.toString());
-   
-    
-    const url = `${this.constants.API_ENDPOINT}/discount/update/${discontId}`;
-
-    return lastValueFrom(this.http.put(url,formData));
+  discountId: number,
+  discountData: { // 1. รับเป็น Object เพื่อความง่าย
+    discount_code?: string;
+    discount_price?: number;
+    max_quantity?: number;
   }
+): Promise<any> {
+
+  // 2. [FIX] ส่งเป็น JSON
+  //    Key (discount_code) ต้องตรงกับ req.body ที่ Backend คาดหวัง
+  const body = {
+    discount_code: discountData.discount_code,
+    discount_price: discountData.discount_price,
+    max_quantity: discountData.max_quantity,
+  };
+
+  const url = `${this.constants.API_ENDPOINT}/discount/update/${discountId}`;
+
+  // 3. ส่ง 'body' (JSON) เข้าไปตรงๆ
+  return lastValueFrom(this.http.put(url, body));
+}
 
   //--------------------------------------------------------------------------------------------------
   //delete
-  public async deletedGDiscount(discontId: number): Promise<void> {
-    const url = `${this.constants.API_ENDPOINT}/games/delete/${discontId}`;
-    try {
-        await lastValueFrom(this.http.delete(url));
-        console.log(`Game with ID ${discontId} deleted successfully.`);
-    } catch (error) {
-        
-        console.error(`Failed to delete game with ID ${discontId}:`, error);
-        throw error;
-    }
+  public async deleteDiscount(discountId: number): Promise<void> { // 1. แก้ชื่อ
+  // 2. แก้ URL จาก /games/delete/ -> /discount/delete/
+  const url = `${this.constants.API_ENDPOINT}/discount/delete/${discountId}`; 
+  try {
+    await lastValueFrom(this.http.delete(url));
+    console.log(`Discount with ID ${discountId} deleted successfully.`);
+  } catch (error) {
+    console.error(`Failed to delete discount with ID ${discountId}:`, error);
+    throw error;
   }
+}
 }

@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Constants } from "../../config/costants";
 import { UsersGetRes } from "../../model/user_get_res";
 import { lastValueFrom } from "rxjs";
-import { AuthService, UserModel } from "./auth";
+import { AuthService,} from "./auth";
 
 
 @Injectable({

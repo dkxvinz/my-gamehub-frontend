@@ -60,8 +60,7 @@ export class TranSactionService {
     const url = `${this.constants.API_ENDPOINT}/trans/pay/${gameId}`;
     try {
      
-    const token = this.authService.getToken(); // สมมติว่ามีฟังก์ชันดึง token
-
+    const token = this.authService.getToken();
     const headers = new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`

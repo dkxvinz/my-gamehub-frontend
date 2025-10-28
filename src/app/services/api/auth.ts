@@ -1,90 +1,105 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject,lastValueFrom } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
-
-export interface UserModel{
+export interface UserModel {
   userId: number;
   name: string;
-  email:string;
-  profile_image:string;
-  role:number;
-  wallet_balance:number;
+  email: string;
+  profile_image: string;
+  role: number;
+  wallet_balance: number;
 }
 
 @Injectable({ providedIn: 'root' })
-export class AuthService  {
-  private API_URL = 'https://node-gamehub.onrender.com';
-  public currentUser: UserModel | null = null;
+export class AuthService {
+  private sessionTimeout = 60 * 60 * 1000; // 1 ชั่วโมง
+  private idleTimer: any;
 
-private currentUserSubject = new BehaviorSubject<UserModel | null>(this.getCurrentUser());
-public currentUser$ = this.currentUserSubject.asObservable();
-  constructor(private http: HttpClient, private router: Router){
-    this.currentUser = this.getCurrentUser();
+  private currentUserSubject = new BehaviorSubject<UserModel | null>(this.getCurrentUser());
+  public currentUser$ = this.currentUserSubject.asObservable();
+  public currentUser: UserModel | null = this.getCurrentUser();
+
+  private router = inject(Router);
+
+  login(userData: UserModel, token: string) {
+    localStorage.setItem('currentUser', JSON.stringify(userData));
+    localStorage.setItem('token', token);
+    localStorage.setItem('sessionExpiry', (Date.now() + this.sessionTimeout).toString());
+    this.setCurrentUser(userData);
+    this.startIdleTimer();
   }
 
-  public login(email: string, password: string){
-    return lastValueFrom(this.http.post<any>(`${this.API_URL}/users/login`, { email, password }))
-      .then(res => {
-        if(res.token){
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('currentUser', JSON.stringify(res.userData));
-          this.currentUser = res.userData;
-        }
-        return res;
-      });
-  }
-
-  public logout(){
-    localStorage.removeItem('token');
+  logout() {
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('token');
+    localStorage.removeItem('sessionExpiry');
     this.currentUser = null;
-    this.router.navigate(['/homepage']);
-      this.currentUserSubject.next(null);
+    this.currentUserSubject.next(null);
+    if (this.idleTimer) clearTimeout(this.idleTimer);
+    this.router.navigate(['/loginpage']);
   }
 
-  
-  public getToken(): string | null {
+  getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  public getCurrentUser(): UserModel | null {
+  getCurrentUser(): UserModel | null {
     const str = localStorage.getItem('currentUser');
     return str ? JSON.parse(str) : null;
   }
 
-  public isAuthenticated(): boolean {
+  setCurrentUser(user: UserModel) {
+    this.currentUser = user;
+    this.currentUserSubject.next(user);
+  }
+
+  isAuthenticated(): boolean {
     return !!this.getToken();
   }
 
   get isAdmin(): boolean {
-  return this.currentUser?.role === 0;
+    return this.currentUser?.role === 0;
+  }
+
+  get isUser(): boolean {
+    return this.currentUser?.role === 1;
+  }
+  saveToken(token: string) {
+  localStorage.setItem('token', token);
+  const expiry = Date.now() + this.sessionTimeout;
+  localStorage.setItem('sessionExpiry', expiry.toString());
 }
 
-get isUser(): boolean {
-  return this.currentUser?.role === 1;
-}
-
-getCurrentUserId(): number | null {
+  /** ตรวจสอบ session หมดอายุ */
+  private checkSessionExpiry() {
+    const expiry = localStorage.getItem('sessionExpiry');
+    if (expiry && Date.now() > parseInt(expiry)) {
+      this.logout();
+      alert('เซสชันหมดอายุ กรุณา login ใหม่');
+    }
+  }
+  getCurrentUserId(): number | null {
   return this.currentUser?.userId ?? null;
 }
 
-  // save token
-  public saveToken(token: string): void {
-    localStorage.setItem('token', token);
+  /** Idle timer สำหรับ inactivity */
+  startIdleTimer() {
+    if (this.idleTimer) clearTimeout(this.idleTimer);
+
+    const resetTimer = () => {
+      this.checkSessionExpiry();
+      if (this.idleTimer) clearTimeout(this.idleTimer);
+      this.idleTimer = setTimeout(() => {
+        this.logout();
+        alert('คุณไม่ได้ใช้งานนานเกิน 1 ชั่วโมง ระบบจะ logout อัตโนมัติ');
+      }, this.sessionTimeout);
+    };
+
+    ['mousemove', 'keydown', 'scroll', 'click'].forEach(event =>
+      window.addEventListener(event, resetTimer)
+    );
+
+    resetTimer(); // เริ่ม timer ครั้งแรก
   }
-
-
-  // save user info
-  public setCurrentUser(user: UserModel): void {
-    this.currentUser = user;
-    localStorage.setItem('currentUser', JSON.stringify(user));
-     this.currentUserSubject.next(user); // แจ้ง subscribers
-  }
-
-
-
-
-
 }
